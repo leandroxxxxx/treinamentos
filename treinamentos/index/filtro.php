@@ -10,9 +10,27 @@ $filtro = isset($_GET['option']) ? $_GET['option'] : null;
 
 $sql_filtro = null;
 
+/*************************************************************************************
+ * **************************PARTE DESTINADA A PAGINACAO******************************
+ ************************************************************************************/
+$pag = isset($_GET['pagina']) ? $_GET['pagina'] : 1; 
+$total_reg = 5; //total de registro por pagina
+
+$inicio = $pag - 1; 
+$inicio = $inicio * $total_reg; //valor inicial na busca no DB
+
+$tr; //total de rows na filtragem
+
+
+
+/*************************************************************************************
+ * **********************************************************************************
+ ************************************************************************************/
+
 function filtro($sql_filtro = null){
     	$database = open_database();
 	$found = array();
+        
 	try {
 	    $result = $database->query($sql_filtro);
 	    
@@ -34,17 +52,23 @@ function filtro($sql_filtro = null){
 }
 
 if($filtro == 't'){
-    index();//funcao que está no arquivo geral function, ja esta incluida no index.php
+    global $tr;
+    $sql_filtro = "SELECT * FROM treinamentos ORDER BY id DESC LIMIT $inicio, $total_reg";
+    $treinamentos = filtro($sql_filtro); //variavel global utilizada no index como uma array
+    $tr = my_query("SELECT * FROM treinamentos")->num_rows;
 }
 if($filtro == 'p' || !$filtro){//retornara a query apenas dos treinamentos nao concluidos
-    $sql_filtro = "SELECT * FROM treinamentos WHERE concluido = 'n' ORDER BY id DESC";
+    global $tr;
+    $sql_filtro = "SELECT * FROM treinamentos WHERE concluido = 'n' ORDER BY id DESC LIMIT $inicio, $total_reg";
     $treinamentos = filtro($sql_filtro);
+    $tr = my_query("SELECT * FROM treinamentos WHERE concluido = 'n'")->num_rows;
 }
 if($filtro == 'c'){
-    $sql_filtro = "SELECT * FROM treinamentos WHERE concluido = 's' ORDER BY id DESC";
+    global $tr;
+    $sql_filtro = "SELECT * FROM treinamentos WHERE concluido = 's' ORDER BY id DESC LIMIT $inicio, $total_reg";
     $treinamentos = filtro($sql_filtro);
+    $tr = my_query("SELECT * FROM treinamentos WHERE concluido = 's'")->num_rows;
 }
 
-
-
-
+$tp = $tr / $total_reg; // verifica o número total de páginas em cada filtro
+$tp = ceil($tp); //aredondando para cima. Variavel eh utilizada no btn_paginacao.php

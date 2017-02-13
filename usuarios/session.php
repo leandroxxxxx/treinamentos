@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION['usuario'])){ 
-  header("Location: ../../treinamento/usuarios/index.php");
+  header("Location: ../../treinamentos/usuarios/index.php");
   exit();//para o codigo nao ser executado logo abaixo
 }
 

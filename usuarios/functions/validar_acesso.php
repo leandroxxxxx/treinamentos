@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once('../config.php');
+require_once('../../config.php');
 require_once (DBAPI);
 
 
@@ -25,9 +25,9 @@ if($resultado_id){
 		$_SESSION["nivel"]	= (int) $dados_usuario['nivel'];
                 $_SESSION['nome']       =       $dados_usuario['nome'];
                 var_dump($_SESSION['nivel']);
-		header("Location: ../index.php");		
+		header("Location: ../../index.php");		
 	} else {
-		header("Location: index.php?erro=1");
+		header("Location: ../index.php?erro=1");
 	}
 	
 

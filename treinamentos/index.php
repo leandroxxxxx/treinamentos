@@ -30,6 +30,7 @@
 <?php endif; ?>
 
 <hr>
+<?php include 'index/botoes/btn_paginacao.php'; ?>
 <form id="filtro" action="index.php" method="get">
     
     <select name="option" class="selectpicker">

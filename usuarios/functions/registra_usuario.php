@@ -1,6 +1,6 @@
 <?php
 
-require_once('../config.php');
+require_once('../../config.php');
 require_once (DBAPI);
 
 //$_POST
@@ -46,16 +46,16 @@ if($usuario_existe || $senha_repetida){
 		$retorno_get.= "erro_senha=1";
 	}
 
-	header("Location: cadastro.php?".$retorno_get);
+	header("Location: ../cadastro.php?".$retorno_get);
 	die();
 }
 
 $sql = " insert into usuarios(usuario, nome, senha, nivel)values('$usuario', '$nome', '$senha', '$nivel') ";
 
 if(my_query($sql)){
-        header("Location: cadastro.php?retorno=1");	
+        header("Location: ../cadastro.php?retorno=1");	
 } else {
-	header("Location: cadastro.php?erro_cadastro = 1");
+	header("Location: ../cadastro.php?erro_cadastro = 1");
 }
 
 ?>

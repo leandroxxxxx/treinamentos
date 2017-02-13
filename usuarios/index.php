@@ -72,7 +72,7 @@ $erro = isset($_GET['erro']) ? $_GET['erro'] : 0;
                                 <div class="col-md-12">
                                     <p>Login</p>
                                         <br />
-                                    <form method="post" action="validar_acesso.php" id="formLogin">
+                                    <form method="post" action="functions/validar_acesso.php" id="formLogin">
                                         <div class="form-group">
                                             <input type="text" class="form-control" id="campo_usuario" name="usuario" placeholder="Usuário" />
                                         </div>

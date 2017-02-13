@@ -1,5 +1,4 @@
 
-
 <?php 
         require_once 'session.php';
 
@@ -9,9 +8,11 @@
 }
 ?>
 <?php
-$erro_usuario = isset($_GET['erro_usuario']) ? $_GET['erro_usuario'] : 0; //retorna erro via get caso o usuario ja exista
-$erro_senha = isset($_GET['erro_senha']) ? $_GET['erro_senha'] : 0;
-$retorno = isset($_GET['retorno']) ? $_GET['retorno'] : 0;
+require_once '../config.php';
+require_once '../inc/database.php';
+require_once 'functions/edit.php';
+editUser();
+
 ?>
 
 <!DOCTYPE HTML>
@@ -52,13 +53,22 @@ $retorno = isset($_GET['retorno']) ? $_GET['retorno'] : 0;
             </div>
         </nav>
 
-        <?php if ($retorno == 1) : ?>
-                <div class="alert alert-success" alert-dismissible role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <p align="center">Cadastro realizado com sucesso!<p>
-                </div>
-
+        <?php if (!empty($_SESSION['message'])) : ?>
+            <div class="alert alert-<?php echo $_SESSION['type']; ?> alert-dismissible" style="text-align:center" role="alert">
+                <button type="button" class="close"  data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $_SESSION['message']; ?>
+            </div>
+            <?php $_SESSION['message'] = ""; /*****/ $_SESSION['message'] = "" ?>
         <?php endif; ?>
+        
+<!--        alerta javascript-->
+        <div id="alerta" class="alert alert-danger alert-dismissible" role="alert" style="text-align: center">
+            <button type="button" class="close" onclick="$('#alerta').hide()"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		As senhas estão diferentes!!
+	</div>
+<!--        alerta javascript-->
+
+        
         <div class="container">
 
             <br /><br />
@@ -67,43 +77,35 @@ $retorno = isset($_GET['retorno']) ? $_GET['retorno'] : 0;
             <div class="col-md-4">
                 <h3 align="center">Cadastro</h3>
                 <br />
-                <form method="post" action="functions/registra_usuario.php" id="formCadastrarse">
+                <form id="edit" method="post" action="edit.php?id=<?php echo $id_edit; ?>">
 
                     <div class="form-group">
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="nome" required="requiored">
+                        <input type="text" class="form-control" id="nome" name="usuario['nome']" placeholder="nome" required="requiored" value="<?php echo $usuario_edit['nome']?>">
 
                     </div>  
 
                     <div class="form-group">
-                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="usuário" >
-                        <?php
-                        if ($erro_usuario) {
-                            echo '<font style="color:#FF0000">Usuário já cadastrado</font>';
-                        }
-                        ?>
+                        <input type="text" class="form-control" id="usuario" name="usuario['usuario']" placeholder="usuário" value="<?php echo $usuario_edit['usuario']?>">
+                       
                     </div>
 
 
                     <div class="form-group">
-                        <input type="password" class="form-control" id="senha" name="senha" placeholder="senha" required="requiored">
+                        <input type="password" class="form-control" id="senha" name="usuario['senha']" placeholder="senha" required="requiored">
                     </div>
 
                     <div class="form-group">
-                        <input type="password" class="form-control" id="re_senha" name="re_senha" placeholder="repita a senha" required="requiored">
+                        <input type="password" class="form-control" id="re_senha"  placeholder="repita a senha" required="requiored">
                     </div>
-                    <?php
-                        if ($erro_senha) {
-                            echo '<font style="color:#FF0000">Senhas não conferem</font>';
-                        }
-                    ?>
+                    
                     <div class="radio">
-                          <label><input type="radio" name="usuario_nivel" value='1' checked>Usuário</label>
+                          <label><input type="radio" name="usuario['nivel']" value='1' checked>Usuário</label>
                     </div>
 
                     <div class="radio">
-                            <label><input type="radio" name="usuario_nivel" value='2'>Administrador</label>
+                            <label><input type="radio" name="usuario['nivel']" value='2'>Administrador</label>
                     </div>
-                    <button type="submit" class="btn btn-primary form-control">Cadastrar</button>
+                    <button id="cadastrar" type="submit" class="btn btn-primary form-control">Cadastrar</button>
 
                 </form>
             </div>
@@ -116,7 +118,23 @@ $retorno = isset($_GET['retorno']) ? $_GET['retorno'] : 0;
             <div class="col-md-4"></div>
 
         </div>
-
+        
+        <script>
+            $(document).ready(function(){ 
+                $("#alerta").hide();
+                
+                $( "#edit" ).submit(function( event ) {
+                    if($('#senha').val() !== $('#re_senha').val()){                        
+                        $('#alerta').show();
+                        event.preventDefault();
+                   }
+                  
+                });
+            });
+                
+         
+        
+        </script>
 
     </div>
 

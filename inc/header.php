@@ -46,7 +46,7 @@
           </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><?= $_SESSION['nome']?></a></li>    
-                <li><a href="../../treinamento/usuarios/logout.php">Sair</a></li>
+                <li><a href="../../treinamentos/usuarios/functions/logout.php">Sair</a></li>
 	          </ul>
         </div><!--/.navbar-collapse -->
       </div>
